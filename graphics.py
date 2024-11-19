@@ -17,15 +17,19 @@ class Graphics:
         pygame.display.set_caption("Sprouts")
         self.screen.fill(pygame.Color("black"))
 
-    def draw_game_state(self, board):
+    def get_dimensions(self):
         """
-        This draws the gamestate (dots and lines) on the window
+        Returns the dimensions of the screen (width, height)
         """
-        self.draw_board()  # draws squares on the board
-        for r in range(self.BOARD_SIZE):
-            for c in range(self.BOARD_SIZE):
-                if board[r][c] != 0:
-                    self.screen.blit(self.IMAGES[0 if board[r][c] == -1 else 1], pygame.Rect(c * self.SQ_SIZE, r * self.SQ_SIZE, self.SQ_SIZE, self.SQ_SIZE))
+        return (self.SCREEN_WIDTH, self.SCREEN_HEIGHT)
+
+    def draw_game_state(self, gs):
+        """
+        Draws the gamestate (dots and lines) on the window
+        """
+        DOT_RADIUS = 5
+        for dot in gs.get_dots():
+            pygame.draw.circle(self.screen, self.WHITE, dot.get_position(), DOT_RADIUS)
 
     def draw_end_text(self, text:str):
         """

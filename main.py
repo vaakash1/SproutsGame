@@ -1,24 +1,15 @@
 import pygame
 import math
 import graphics
-
-NUM_STARTING_DOTS = 3
-
-class Dot:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        
-class Line:
-    def __init__(self, start, end):
-        self.start = start
-        self.end = end
+import game_state
 
 pygame.init()
 
 if __name__ == "__main__":
     WINDOW_SIZE = (800,800)
-    graphics = graphics.Graphics(WINDOW_SIZE)
+    NUM_STARTING_DOTS = 4
+    screen = graphics.Graphics(WINDOW_SIZE)
+    gs = game_state.GameState(screen, NUM_STARTING_DOTS)
     game_over = False
     running = True
 
@@ -37,6 +28,8 @@ if __name__ == "__main__":
                     
                 if e.key == pygame.K_r:  # resets game when r is pressed
                     pass
+        
+        screen.draw_game_state(gs)
 
         pygame.display.flip()
 
