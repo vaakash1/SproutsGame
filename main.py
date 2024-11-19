@@ -1,5 +1,6 @@
 import pygame
 import math
+import graphics
 
 NUM_STARTING_DOTS = 3
 
@@ -13,6 +14,31 @@ class Line:
         self.start = start
         self.end = end
 
+pygame.init()
+
+if __name__ == "__main__":
+    WINDOW_SIZE = (800,800)
+    graphics = graphics.Graphics(WINDOW_SIZE)
+    game_over = False
+    running = True
+
+    while running:
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                running = False
+            # mouse handlers
+            elif e.type == pygame.MOUSEBUTTONDOWN:
+                if not game_over:
+                    pass
+                # key handlers
+            elif e.type == pygame.KEYDOWN:
+                if e.key == pygame.K_z:  # undo when 'z' is pressed
+                    pass
+                    
+                if e.key == pygame.K_r:  # resets game when r is pressed
+                    pass
+
+        pygame.display.flip()
 
 
 """
