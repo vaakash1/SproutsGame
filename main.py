@@ -26,7 +26,7 @@ if __name__ == "__main__":
                 if e.key == pygame.K_z:  # undo when 'z' is pressed
                     pass
                     
-                if e.key == pygame.K_r:  # resets game when r is pressed
+                if e.key == pygame.K_r:  # resets game when 'r' is pressed
                     pass
         
         screen.draw_game_state(gs)
