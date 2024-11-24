@@ -1,22 +1,25 @@
 import pygame
 import math
-import graphics
-import game_state
+import SproutsGame.graphics as graphics
+import SproutsGame.game_state as game_state
+import SproutsGame.game_events as game_event
 
 pygame.init()
 
 if __name__ == "__main__":
-    WINDOW_SIZE = (800,800)
+    WINDOW_SIZE = (800, 800)
     NUM_STARTING_DOTS = 4
     screen = graphics.Graphics(WINDOW_SIZE)
     gs = game_state.GameState(screen, NUM_STARTING_DOTS)
+    gv = game_event.GameEvent(gs)
     game_over = False
     running = True
 
     while running:
         for e in pygame.event.get():
-            if e.type == pygame.QUIT:
+            if e.type == pygame.QUIT:  # game ends when red x is pressed
                 running = False
+                pygame.quit()
             # mouse handlers
             elif e.type == pygame.MOUSEBUTTONDOWN:
                 if not game_over:
@@ -25,30 +28,29 @@ if __name__ == "__main__":
             elif e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_z:  # undo when 'z' is pressed
                     pass
-                    
+
                 if e.key == pygame.K_r:  # resets game when 'r' is pressed
                     pass
-        
+
         screen.draw_game_state(gs)
 
         pygame.display.flip()
 
-
 """
 Copilot 90% Nonsense below
-"""    
-        
+"""
+
 #     def __hash__(self) -> int:
 #         return hash((self.start, self.end))
-        
-        
+
+
 # class Game:
 #     def __init__(self):
 #         self.dots = set()
 #         self.lines = []
 #         self.running = True
 #         self.screen = pygame.display.set_mode((800, 600))
-                
+
 #         for i in range(NUM_STARTING_DOTS):
 #             # i dots in a circle
 #             x = 100 + 50 * math.cos(i * 2 * math.pi / NUM_STARTING_DOTS)
@@ -80,7 +82,7 @@ Copilot 90% Nonsense below
 #                                 if (line.start == selectedDots[0] and line.end == selectedDots[1]) or (line.start == selectedDots[1] and line.end == selectedDots[0]):
 #                                     valid = False
 #                                 # check if line intersects with other lines
-                                
+
 #                             if valid:
 #                                 self.lines.append(Line(selectedDots[0], selectedDots[1]))
 #                                 self.update()
@@ -94,11 +96,9 @@ Copilot 90% Nonsense below
 #             self.update()
 #             self.draw()
 #             pygame.display.flip()
-            
+
 #     def update(self):
 #         pass
-    
-    
 
 
 # g = Game()

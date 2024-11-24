@@ -29,7 +29,7 @@ class Graphics:
         """
         DOT_RADIUS = 5
         for dot in gs.get_dots():
-            pygame.draw.circle(self.screen, self.WHITE, dot.get_position(), DOT_RADIUS)
+            pygame.draw.circle(self.screen, dot.get_color(), dot.get_position(), DOT_RADIUS)
 
     def draw_end_text(self, text:str):
         """

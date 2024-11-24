@@ -1,4 +1,4 @@
-import graphics
+import SproutsGame.graphics as graphics
 import math
 """
 This file handles the current game state
@@ -8,12 +8,17 @@ class Dot:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+        self.color = (255, 255, 255)
     
     def get_position(self):
         return (self.x, self.y)
+
+    def get_color(self):
+        return self.color
+
         
 class Line:
-    def __init__(self, start, end):
+    def __init__(self, start:Dot, end:Dot):
         self.start = start
         self.end = end
 
