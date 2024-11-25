@@ -14,7 +14,7 @@ class GameEvent:
         self.key_events = []
 
     def dist(self, dot, click_pos):
-        return math.sqrt((dot.x - click_pos.pos[0])**2 + (dot.y - click_pos[1])**2)
+        return math.sqrt((dot.x - click_pos.pos[0])**2 + (dot.y - click_pos.pos[1])**2)
 
     def check_dot(self, click_pos):
         return [x for x in self.gs.get_dots() if self.dist(x, click_pos) <= 5]

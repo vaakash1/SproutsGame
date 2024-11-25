@@ -1,14 +1,17 @@
-import SproutsGame.graphics as graphics
+import graphics
 import math
 """
 This file handles the current game state
 """
 
+DESELECTED_DOT_COLOR = (255, 255, 255)
+SELECTED_DOT_COLOR = (77, 77, 255)
+
 class Dot:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.color = (255, 255, 255)
+        self.color = DESELECTED_DOT_COLOR 
     
     def get_position(self):
         return (self.x, self.y)
@@ -21,11 +24,24 @@ class Line:
     def __init__(self, start:Dot, end:Dot):
         self.start = start
         self.end = end
+    
+    def intersects(self, line):
+        def ccw(A, B, C):
+            """
+            Checks if points a, b, and c are in counter-clockwise order, using determinants
+            """
+            return (C.y - A.y) * (B.x - A.x) > (B.y - A.y) * (C.x - A.x)
+
+        def intersect(A, B, C, D):
+            return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B, C) != ccw(A, B, D)
+
+        return intersect(self.start, self.end, line.start, line.end)
 
 class GameState:
     def __init__(self, screen:graphics, starting_dots:int=3):
         self.screen = screen
         self.list_of_dots = []
+        self.selected_dots = []
         self.generate_dots(starting_dots)
         self.list_of_lines = []
         self.turn = 1
@@ -53,6 +69,13 @@ class GameState:
         Returns the list of lines
         """
         return self.list_of_lines
-
-
-
+    
+    def select_dot(self, dot):
+        """
+        When the user clicks on a dot, add it to the list of selected dots
+        """
+        dot.color = SELECTED_DOT_COLOR
+        self.selected_dots.insert(0, dot)
+        while(len(self.selected_dots) > 2):
+            extra = self.selected_dots.pop()
+            extra.color = DESELECTED_DOT_COLOR
