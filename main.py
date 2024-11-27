@@ -11,7 +11,7 @@ if __name__ == "__main__":
     NUM_STARTING_DOTS = 4
     screen = graphics.Graphics(WINDOW_SIZE)
     gs = game_state.GameState(screen, NUM_STARTING_DOTS)
-    gv = game_events.GameEvent(gs)
+    ev = game_events.GameEvent(gs)
     game_over = False
     running = True
 
@@ -23,9 +23,7 @@ if __name__ == "__main__":
             # mouse handlers
             elif e.type == pygame.MOUSEBUTTONDOWN:
                 if not game_over:
-                    for dot in gv.check_dot(e):
-                        gs.select_dot(dot)
-                        pass
+                    ev.event_listener(e)
                 # key handlers
             elif e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_z:  # undo when 'z' is pressed

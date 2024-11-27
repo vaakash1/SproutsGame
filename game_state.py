@@ -26,6 +26,8 @@ class Line:
         self.end = end
     
     def intersects(self, line):
+        """returns true if the line intersects with another line, false otherwise
+        """
         def ccw(A, B, C):
             """
             Checks if points a, b, and c are in counter-clockwise order, using determinants
@@ -33,6 +35,8 @@ class Line:
             return (C.y - A.y) * (B.x - A.x) > (B.y - A.y) * (C.x - A.x)
 
         def intersect(A, B, C, D):
+            """checks if line AB intersects line CD using the ccw function above
+            """
             return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B, C) != ccw(A, B, D)
 
         return intersect(self.start, self.end, line.start, line.end)
