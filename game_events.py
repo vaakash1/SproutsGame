@@ -1,4 +1,5 @@
 import math
+import pygame
 from game_state import SELECTED_DOT_COLOR, DESELECTED_DOT_COLOR
 from abc import ABC, abstractmethod
 """
@@ -7,6 +8,7 @@ This file handles the current game events
 class GameEvent:
     def __init__(self, gs):
         self.events = []
+        self.currIndex = 0
         self.gs = gs
 
     def reset_events(self):
@@ -20,8 +22,18 @@ class GameEvent:
 
     #Listens for events and adds them to the a list of events triggered by the player
     def event_listener(self, e):
-        self.handle_click(e)
-        pass
+        """
+       Handles user induced events
+        """
+        #Handles Mouse Events
+        if(e.type == pygame.MOUSEBUTTONDOWN):
+            self.handle_click(e)
+        # Handles Key Events
+        elif e.type == pygame.KEYDOWN:
+             if e.key == pygame.K_r:  # resets game when 'r' is pressed
+               self.reset_events()
+             if e.key == pygame.K_z:
+                self.undo_event()
     
 
     def handle_click(self, e):
@@ -30,14 +42,18 @@ class GameEvent:
         """
         for dot in self.check_dot(e):
             dot_event = SelectDot(dot)
-            self.events.append(dot_event)
+            self.add_event(dot_event)
+            self.currIndex +=1
             dot_event.execute()
-            pass
-
-    #Use 'iterator' on the event list --> keep track of past events, so its easier to do the undo method
-    #Create several undo_events methods for each event
-    def undo_event(self):
         pass
+
+    def undo_event(self):
+        if(len(self.events) > 0):
+            self.events.pop(self.currIndex - 1).undo()
+            self.currIndex-=1
+        pass
+
+
     
     def add_event(self, event):
         self.events.append(event)
@@ -64,7 +80,7 @@ class SelectDot(Action):
         self.dot.color = SELECTED_DOT_COLOR
 
     def undo(self):
-        self.dot.color = (255, 255, 255)
+        self.dot.color = DESELECTED_DOT_COLOR
     
 
 

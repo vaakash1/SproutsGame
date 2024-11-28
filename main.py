@@ -20,18 +20,9 @@ if __name__ == "__main__":
             if e.type == pygame.QUIT:  # game ends when red x is pressed
                 running = False
                 pygame.quit()
-            # mouse handlers
-            elif e.type == pygame.MOUSEBUTTONDOWN:
-                if not game_over:
+            # event handlers
+            if not game_over:
                     ev.event_listener(e)
-                # key handlers
-            elif e.type == pygame.KEYDOWN:
-                if e.key == pygame.K_z:  # undo when 'z' is pressed
-                    pass
-
-                if e.key == pygame.K_r:  # resets game when 'r' is pressed
-                    pass
-
         screen.draw_game_state(gs)
 
         pygame.display.flip()
