@@ -31,6 +31,9 @@ class Graphics:
         for dot in gs.get_dots():
             pygame.draw.circle(self.screen, dot.get_color(), dot.get_position(), DOT_RADIUS)
 
+        for line in gs.get_lines():
+            pygame.draw.line(self.screen, (255, 255, 255), pygame.Vector2(line.start.get_position()), pygame.Vector2(line.end.get_position()), 2)
+
     def draw_end_text(self, text:str):
         """
         Draws the given text on the screen

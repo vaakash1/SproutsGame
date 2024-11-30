@@ -1,6 +1,7 @@
 import math
 import pygame
 from game_state import SELECTED_DOT_COLOR, DESELECTED_DOT_COLOR
+from game_state import Dot, Line
 from abc import ABC, abstractmethod
 """
 This file handles the current game events
@@ -45,35 +46,43 @@ class GameEvent:
             for dot in self.check_dot(e):
                 dot_event = SelectDot(dot)
                 self.add_event(dot_event)
-                self.gs.add_select_dot(dot)
-                self.currIndex +=1
-                dot_event.execute()
+                dot_event.execute(self.gs)
+        if(len(self.gs.get_selected()) == 2):
+            dot1 = self.gs.get_selected().pop(0)
+            dot2 = self.gs.get_selected().pop(0)
+            dot1.color = DESELECTED_DOT_COLOR
+            dot2.color = DESELECTED_DOT_COLOR
+            line = Line(dot1, dot2)
+            for l in self.gs.get_lines():
+                if(line.intersects(l)):
+                    return
+            line_event = MakeLine(line)
+            self.add_event(line_event)
+            print("Line Made")
+            line_event.execute(self.gs)
         pass
 
     def undo_event(self):
         if(len(self.events) > 0):
-            past_event  = self.events.pop(self.currIndex - 1)
-            past_event.undo()
-            if(type(past_event) == SelectDot):
-               self.gs.get_selected().pop(0)
-            self.currIndex-=1
+            past_event  = self.events.pop(0)
+            past_event.undo(self.gs)
         pass
 
-
+    
     
     def add_event(self, event):
-        self.events.append(event)
+        self.events.insert(0, event)
 
 class Action(ABC):
     """Used to represent an action that can be executed and undone"""
     @abstractmethod
-    def execute(self):
+    def execute(self, gs):
         """Performs the action
         """
         pass
 
     @abstractmethod
-    def undo(self):
+    def undo(self, gs):
         """Undoes the action
         """
         pass
@@ -82,14 +91,26 @@ class SelectDot(Action):
     def __init__(self, dot):
         self.dot = dot
 
-    def execute(self):
+    def execute(self, gs):
+        gs.add_select_dot(self.dot)
         self.dot.color = SELECTED_DOT_COLOR
-
-    def undo(self):
+    def undo(self, gs):
         self.dot.color = DESELECTED_DOT_COLOR
+        return gs.get_selected().pop(0)
 
     def get_dot(self):
         return self.dot
     
 
+class MakeLine(Action):
+    def __init__(self, line):
+        self.line = line
+    
+    def execute(self, gs):
+        self.line.start.color = DESELECTED_DOT_COLOR
+        self.line.end.color = DESELECTED_DOT_COLOR
+        gs.get_lines().append(self.line)
 
+    def undo(self, gs):
+        print(gs.get_lines())
+        gs.get_lines().pop(0)
