@@ -18,7 +18,8 @@ class GameEvent:
         return math.sqrt((dot.x - click_pos.pos[0])**2 + (dot.y - click_pos.pos[1])**2)
 
     def check_dot(self, click_pos):
-        return [x for x in self.gs.get_dots() if self.dist(x, click_pos) <= 5]
+        unselected_dots = set(self.gs.get_dots()).difference(set(self.gs.get_selected()))
+        return [x for x in unselected_dots if self.dist(x, click_pos) <= 5]
 
     #Listens for events and adds them to the a list of events triggered by the player
     def event_listener(self, e):
@@ -40,16 +41,21 @@ class GameEvent:
         """
         If the user has clicked on a dot, select it
         """
-        for dot in self.check_dot(e):
-            dot_event = SelectDot(dot)
-            self.add_event(dot_event)
-            self.currIndex +=1
-            dot_event.execute()
+        if(len(self.gs.get_selected()) < 2):
+            for dot in self.check_dot(e):
+                dot_event = SelectDot(dot)
+                self.add_event(dot_event)
+                self.gs.add_select_dot(dot)
+                self.currIndex +=1
+                dot_event.execute()
         pass
 
     def undo_event(self):
         if(len(self.events) > 0):
-            self.events.pop(self.currIndex - 1).undo()
+            past_event  = self.events.pop(self.currIndex - 1)
+            past_event.undo()
+            if(type(past_event) == SelectDot):
+               self.gs.get_selected().pop(0)
             self.currIndex-=1
         pass
 
@@ -81,6 +87,9 @@ class SelectDot(Action):
 
     def undo(self):
         self.dot.color = DESELECTED_DOT_COLOR
+
+    def get_dot(self):
+        return self.dot
     
 
 

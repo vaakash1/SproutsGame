@@ -73,13 +73,15 @@ class GameState:
         Returns the list of lines
         """
         return self.list_of_lines
+
+    def get_selected(self):
+        """
+        Returns the list of selected dots
+        """
+        return self.selected_dots
     
-    def select_dot(self, dot):
+    def add_select_dot(self, dot):
         """
         When the user clicks on a dot, add it to the list of selected dots
         """
-        dot.color = SELECTED_DOT_COLOR
-        self.selected_dots.insert(0, dot)
-        while(len(self.selected_dots) > 2):
-            extra = self.selected_dots.pop()
-            extra.color = DESELECTED_DOT_COLOR
+        self.selected_dots.insert(0,dot)
