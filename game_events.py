@@ -23,7 +23,7 @@ class GameEvent:
 
     #Listens for events and adds them to the a list of events triggered by the player
     def event_listener(self, e):
-        """
+        """:
        Handles user induced events
         """
         #Handles Mouse Events
