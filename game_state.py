@@ -13,6 +13,13 @@ class Dot:
         self.y = y
         self.color = DESELECTED_DOT_COLOR 
     
+    def __eq__(self, value: object) -> bool:
+        return (self.x == value.x) and (self.y == value.y)
+    def __str__(self) -> str:
+        return f"({self.x}, {self.y})"
+    def __hash__(self) -> int:
+        return hash((self.x, self.y))
+    
     def get_position(self):
         return (self.x, self.y)
 
@@ -24,7 +31,8 @@ class Line:
     def __init__(self, start:Dot, end:Dot):
         self.start = start
         self.end = end
-    
+    def __str__(self):
+        return f"Line from {self.start} to {self.end}"
     def intersects(self, line):
         """returns true if the line intersects with another line, false otherwise
         """
@@ -33,12 +41,17 @@ class Line:
             Checks if points a, b, and c are in counter-clockwise order, using determinants
             """
             return (C.y - A.y) * (B.x - A.x) > (B.y - A.y) * (C.x - A.x)
-
         def intersect(A, B, C, D):
-            """checks if line AB intersects line CD using the ccw function above
+            """checks if line AB intersects line CD using the ccw function above. 
             """
+            if ((A == C) and (B != D)) or ((A != C) and (B == D)):
+                # return dot product of the two lines
+                dot_product = (B.x - A.x) * (D.y - C.y) + (B.y - A.y) * (C.x - D.x)
+                mag_AB = math.sqrt((B.x - A.x)**2 + (B.y - A.y)**2) 
+                mag_CD = math.sqrt((D.x - C.x)**2 + (D.y - C.y)**2)
+                print(dot_product, mag_AB, mag_CD)
+                return abs(mag_AB * mag_CD - dot_product) <= 1e-6
             return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B, C) != ccw(A, B, D)
-
         return intersect(self.start, self.end, line.start, line.end)
 
 class GameState:

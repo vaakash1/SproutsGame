@@ -27,6 +27,7 @@ class Graphics:
         """
         Draws the gamestate (dots and lines) on the window
         """
+        self.screen.fill(self.BLACK)
         DOT_RADIUS = 5
         for dot in gs.get_dots():
             pygame.draw.circle(self.screen, dot.get_color(), dot.get_position(), DOT_RADIUS)

@@ -22,7 +22,10 @@ if __name__ == "__main__":
                 pygame.quit()
             # event handlers
             if not game_over:
-                    ev.event_listener(e)
+                ev.event_listener(e)
+                if e.type == pygame.KEYDOWN:
+                    if e.key == pygame.K_q:
+                        print(f"Events: {[str(ev) for ev in ev.events]}")
         screen.draw_game_state(gs)
 
         pygame.display.flip()
