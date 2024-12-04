@@ -8,7 +8,7 @@ pygame.init()
 
 if __name__ == "__main__":
     WINDOW_SIZE = (800, 800)
-    NUM_STARTING_DOTS = 4
+    NUM_STARTING_DOTS = 8
     screen = graphics.Graphics(WINDOW_SIZE)
     gs = game_state.GameState(screen, NUM_STARTING_DOTS)
     ev = game_events.GameEvent(gs)
