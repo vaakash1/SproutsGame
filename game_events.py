@@ -124,6 +124,5 @@ class MakeLine(Action):
 
     def undo(self, gs):
         print(gs.get_lines())
-        gs.get_lines().pop(0)
-        
+        gs.get_lines().pop()
         print(gs.get_lines())
