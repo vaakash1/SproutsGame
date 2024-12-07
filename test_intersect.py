@@ -61,5 +61,11 @@ class TestSproutsGame(unittest.TestCase):
         l20 = Line(Dot(329.28932188134524, 470.71067811865476), Dot(329.28932188134524, 329.28932188134524))
         self.assertFalse(l19.intersects(l20))
         self.assertFalse(l20.intersects(l19))
+    
+    def test_game_case_3_false(self):
+        l21 = Line(Dot(329.28932188134524, 470.71067811865476), Dot(400.0, 300.0))
+        l22 = Line(Dot(470.71067811865476, 329.28932188134524), Dot(329.28932188134524, 470.71067811865476))
+        self.assertFalse(l21.intersects(l22))
+        self.assertFalse(l22.intersects(l21))
 
 unittest.main()

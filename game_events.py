@@ -75,9 +75,7 @@ class GameEvent:
             past_event  = self.events.pop(0)
             past_event.undo(self.gs)
         pass
-
-    
-    
+ 
     def add_event(self, event):
         self.events.insert(0, event)
 

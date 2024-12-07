@@ -72,7 +72,7 @@ class Line:
         """ Returns true if the dot is on the line (excluding the endpoints), false otherwise
         """
         eq = self.get_equation()
-        return eq[0] * dot.x + eq[1] * dot.y == eq[2] and self.end != dot and self.start != dot and dot.distance(self.start) + dot.distance(self.end) == self.start.distance(self.end)
+        return eq[0] * dot.x + eq[1] * dot.y == eq[2] and self.end != dot and self.start != dot and dot.distance(self.start) + dot.distance(self.end) <= self.start.distance(self.end) + 0.01
         
     def intersects(self, line):
         def check_consistency(A, B):
