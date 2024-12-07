@@ -53,7 +53,13 @@ class TestSproutsGame(unittest.TestCase):
     def test_game_floating_point_tolerance(self):
         l17 = Line(Dot(470.71067811865476, 470.71067811865476), Dot(400.0, 500.0))
         l18 = Line(Dot(329.28932188134524, 470.71067811865476), Dot(470.71067811865476, 329.28932188134524))
-        self.assertTrue(l17.intersects(l18))
-        self.assertTrue(l18.intersects(l17))
+        self.assertFalse(l17.intersects(l18))
+        self.assertFalse(l18.intersects(l17))
+
+    def test_game_case_2_false(self):
+        l19 = Line(Dot(500.0, 400.0), Dot(400.0, 500.0))
+        l20 = Line(Dot(329.28932188134524, 470.71067811865476), Dot(329.28932188134524, 329.28932188134524))
+        self.assertFalse(l19.intersects(l20))
+        self.assertFalse(l20.intersects(l19))
 
 unittest.main()

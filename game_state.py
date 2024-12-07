@@ -20,7 +20,8 @@ class Dot:
         return f"({self.x}, {self.y})"
     def __hash__(self) -> int:
         return hash((self.x, self.y))
-    
+    def distance(self, dot):
+        return math.sqrt((self.x - dot.x)**2 + (self.y - dot.y)**2)
     def get_position(self):
         return (self.x, self.y)
 
@@ -56,7 +57,7 @@ class Line:
         B = np.array([c1, c2])
         
         return (A, B)
-    
+      
     def get_equation(self):
         """
         Returns a list of coefficients in the equation of the line in the form ax + by = c
@@ -71,7 +72,7 @@ class Line:
         """ Returns true if the dot is on the line (excluding the endpoints), false otherwise
         """
         eq = self.get_equation()
-        return eq[0] * dot.x + eq[1] * dot.y == eq[2] and self.end != dot and self.start != dot
+        return eq[0] * dot.x + eq[1] * dot.y == eq[2] and self.end != dot and self.start != dot and dot.distance(self.start) + dot.distance(self.end) == self.start.distance(self.end)
         
     def intersects(self, line):
         def check_consistency(A, B):
@@ -87,37 +88,18 @@ class Line:
                 except np.linalg.LinAlgError:
                     print("System has infinitely many solutions")
                     return 2
-                # if rank_A < A.shape[1]:
-                #     print("Infinitely many solutions.")
-                #     return 2
-                # else:
-                #     print("Unique solution.")
-                #     return 1
             else:
                 print("System is inconsistent.")
                 return 0
+                
         def order_dots(self, line):
-            # x1 = self.start.x
-            # x2 = self.end.x
-            # x3 = line.start.x
-            # x4 = line.end.x
-            # return [(min(x1, x2), min(y1, y2)), max(x1,x2)]
             line_direction = (line.end.x - line.start.x, line.end.y - line.start.y)
             a = [self.start, self.end, line.start, line.end]
             a.sort(key=lambda dot: line_direction[0] * dot.x + line_direction[1] * dot.y)
             return a
         
         A, B = self.get_matrix_equation(line)
-        # try:
-        #     intersection = np.linalg.solve(A, B)
-        #     if (min(self.start.x, self.end.x) < intersection[0] < max(self.start.x, self.end.x) and
-        #         min(self.start.y, self.end.y) < intersection[1] < max(self.start.y, self.end.y) and
-        #         min(line.start.x, line.end.x) < intersection[0] < max(line.start.x, line.end.x) and
-        #         min(line.start.y, line.end.y) < intersection[1] < max(line.start.y, line.end.y)):
-        #         return True
-        # except np.linalg.LinAlgError:
-        #     pass
-        # return False
+
         consistency = check_consistency(A, B)
         if consistency == 0:
             return False
@@ -137,25 +119,6 @@ class Line:
             solution_dot = Dot(solution[0], solution[1])
             print(solution)
             return self.dot_on_line(solution_dot) and line.dot_on_line(solution_dot)
-    
-    #copilot nonsense
-    """def intersects(self, line):
-        #returns true if the line intersects with another line, false otherwise
-        
-        def ccw(A, B, C):
-            #Checks if points a, b, and c are in counter-clockwise order, using determinants
-            return (C.y - A.y) * (B.x - A.x) > (B.y - A.y) * (C.x - A.x)
-        def intersect(A, B, C, D):
-            #checks if line AB intersects line CD using the ccw function above. 
-            if ((A == C) and (B != D)) or ((A != C) and (B == D)):
-                # return dot product of the two lines
-                dot_product = (B.x - A.x) * (D.y - C.y) + (B.y - A.y) * (C.x - D.x)
-                mag_AB = math.sqrt((B.x - A.x)**2 + (B.y - A.y)**2) 
-                mag_CD = math.sqrt((D.x - C.x)**2 + (D.y - C.y)**2)
-                print(dot_product, mag_AB, mag_CD)
-                return abs(mag_AB * mag_CD - dot_product) <= 1e-6
-            return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B, C) != ccw(A, B, D)
-        return intersect(self.start, self.end, line.start, line.end)"""
 
 class GameState:
     def __init__(self, screen:graphics, starting_dots:int=3):
